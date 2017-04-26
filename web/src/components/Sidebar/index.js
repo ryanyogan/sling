@@ -13,8 +13,8 @@ const styles = StyleSheet.create({
   link: {
     position: 'relative',
     display: 'flex',
-    width: '60px',
-    color: 'rgba(255, 255, 255, .6)',
+    width: '65px',
+    color: 'rgba(255,255,255,.6)',
     ':hover': {
       textDecoration: 'none',
     },
@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
       textDecoration: 'none',
     },
   },
+
   activeLink: {
     color: '#fff',
     ':after': {
@@ -55,75 +56,52 @@ const styles = StyleSheet.create({
     border: '0',
     cursor: 'pointer',
   },
-
-  badge: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '45px',
-    height: '45px',
-    margin: '12px auto',
-    fontSize: '20px',
-    background: 'rgba(255, 255, 255, .2)',
-    borderRadius: '5px',
-  },
-
-  logoutButton: {
-    padding: '0',
-    background: 'transparent',
-    border: '0',
-    cursor: 'pointer',
-  },
 });
 
 type Room = {
   id: number,
   name: string,
-};
+}
 
 type RoomLinkProps = {
   room: Room
-};
+}
 
 const RoomLink = ({ room }: RoomLinkProps) =>
-  <Link to={ `/r/${room.id}`}
-    className={css(styles.link)}
-    activeClassName={css(styles.activeLink)}
-  >
+  <Link to={`/r/${room.id}`} className={css(styles.link)} activeClassName={css(styles.activeLink)}>
     <div className={css(styles.badge)}>
       <span>{room.name.charAt(0)}</span>
     </div>
-  </Link>
+  </Link>;
 
-  type Props = {
-    rooms: Array<Room>,
-    router: Object,
-    onLogoutClick: () => void,
-  }
+type Props = {
+  rooms: Array<Room>,
+  router: Object,
+  onLogoutClick: () => void,
+}
 
-  const Sidebar = ({ rooms, router, onLogoutClick }: Props) => (
-    <div className={css(styles.sidebar)}>
-      {rooms.map(room => <RoomLink key={room.id} room={room} />)}
-      <Link
-        to="/"
-        activeOnlyWhenExact
-        className={css(styles.link)}
-        activeClassName={css(styles.activeLink)}
-      >
-        <div className={css(styles.badge)}>
-          <span className="fa fa-plus" />
-        </div>
-      </Link>
-      <div style={{ flex: '1' }} />
-      <button
-        onClick={() => onLogoutClick(router)}
-        className={css(styles.link, styles.logoutButton)}
-      >
-        <div className={css(styles.badge)}>
-          <span className="fa fa-sign-out" />
-        </div>
-      </button>
-    </div>
-  );
+const Sidebar = ({ rooms, router, onLogoutClick }: Props) =>
+  <div className={css(styles.sidebar)}>
+    {rooms.map((room) => <RoomLink key={room.id} room={room} />)}
+    <Link
+      to="/"
+      activeOnlyWhenExact
+      className={css(styles.link)}
+      activeClassName={css(styles.activeLink)}
+    >
+      <div className={css(styles.badge)}>
+        <span className="fa fa-plus" />
+      </div>
+    </Link>
+    <div style={{ flex: '1' }} />
+    <button
+      onClick={() => onLogoutClick(router)}
+      className={css(styles.link, styles.logoutButton)}
+    >
+      <div className={css(styles.badge)}>
+        <span className="fa fa-sign-out" />
+      </div>
+    </button>
+  </div>;
 
 export default Sidebar;
