@@ -38,6 +38,7 @@ defmodule Sling.Mixfile do
      {:comeonin, "~> 1.0"},
      {:guardian, "~> 0.13.0"},
      {:cors_plug, "~> 1.1"},
+     {:scrivener_ecto, "~> 1.0"},
      {:cowboy, "~> 1.0"}]
   end
 
