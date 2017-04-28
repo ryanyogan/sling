@@ -5,7 +5,7 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case 'FETCH_ROOMS_SUCESS':
+    case 'FETCH_ROOMS_SUCCESS':
       return {
         ...state,
         all: action.response.data,
@@ -20,7 +20,7 @@ export default function (state = initialState, action) {
         ...state,
         all: [
           action.response.data,
-          ...state.all
+          ...state.all,
         ],
         currentUserRooms: [
           ...state.currentUserRooms,
@@ -38,4 +38,4 @@ export default function (state = initialState, action) {
     default:
       return state;
   }
-};
+}
