@@ -17,6 +17,7 @@ defmodule Sling.RoomChannel do
       pagination: Sling.PaginationHelpers.pagination(page)
     }
 
+    send(self, :after_join)
     {:ok, response, assign(socket, :room, room)}
   end
 
@@ -34,6 +35,14 @@ defmodule Sling.RoomChannel do
         {:reply, {:error, Phoenix.View.render(Sling.ChangesetView,
           "error.json", changeset: changeset)}, socket}
     end
+  end
+
+  def handle_info(:after_join, socket) do
+    Sling.Presence.track(socket, socket.assigns.current_user.id, %{
+      user: Phoenix.View.render_one(socket.assigns.current_user, Sling.UserView, "user.json")
+    })
+    push(socket, "presence_state", Sling.Presence.list(socket))
+    {:noreply, socket}
   end
 
   def terminate(_reason, socket) do

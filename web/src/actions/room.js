@@ -1,9 +1,24 @@
 import { reset } from 'redux-form';
+import { Presence } from 'phoenix';
+
+const syncPresentUsers = (dispatch, presences) => {
+  const presentUsers = [];
+  Presence.list(presences, (id, { metas: [first] }) => first.user)
+    .map(user => presentUsers.push(user));
+
+  dispatch({ type: 'ROOM_PRESENCE_UPDATE', presentUsers });
+};
 
 export const connectToChannel = (socket, roomId) => {
   return (dispatch) => {
     if (!socket) { return false; }
     const channel = socket.channel(`rooms:${roomId}`);
+    let presences = {};
+
+    channel.on('presence_state', (state) => {
+      presences = Presence.syncState(presences, state);
+      syncPresentUsers(dispatch, presences);
+    });
 
     channel.on('message_created', (message) => {
       dispatch({ type: 'MESSAGE_CREATED', message });
